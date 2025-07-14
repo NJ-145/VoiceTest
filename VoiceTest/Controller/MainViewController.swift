@@ -46,7 +46,10 @@ class MainViewController: UIViewController {
     
     /// 擷取整個畫面並儲存到相簿
     func takeScreenshot() {
-        guard let window = UIApplication.shared.windows.first else { return }  // 👉 取得目前顯示的主視窗
+        guard
+            let windowScene = UIApplication.shared.connectedScenes.first(where: { $0 is UIWindowScene }) as? UIWindowScene,
+            let window = windowScene.windows.first(where: { $0.isKeyWindow })
+        else { return } // 👉 取得目前顯示的主視窗
         
         let renderer = UIGraphicsImageRenderer(bounds: window.bounds)
         let image = renderer.image { context in
